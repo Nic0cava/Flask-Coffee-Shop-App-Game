@@ -13,24 +13,31 @@
 #! Clean and Condense any repetitive code
 #! Move functions to separate file
 
-#! Make a tracker for how many coffees sold and total net-revenue made
-
 import random
+import time
 # Ask for Coffee Shop Name
 shop_name = input("Congratulations on your new coffee shop! What would you like to name your coffee shop?").capitalize()
 print(f"Your shop name is: {shop_name}")
 
 # Shop Menu: #! Could possibly have this be up to the player?
 menu = ['espresso', 'latte', 'cappuccino']
+# Recipes 
+recipes = {menu[0]:"18g coffee, 50ml water, 0ml milk",
+           menu[1]:"24g coffee, 200ml water, 150ml milk",
+           menu[2]:"24g coffee, 250ml water, 100ml milk"}
+# Coffee Prices:
+prices = {menu[0]: 3.65,
+          menu[1]: 6.75,
+          menu[2]: 5.95}
+# Espresso: $3.65
+# Latte: $6.75
+# Cappuccino: $5.95
+
 # Starting Balance: $50.00
 balance = 50.00
 # Starting Inventory: coffee(250g), milk(1800ml)
 coffee = 250
 milk = 1800
-# Coffee Prices: #! Allow editing of prices all in one place
-# Espresso: $3.65
-# Latte: $6.75
-# Cappuccino: $5.95
 
 # Update inventory:
 def update_inventory(current_coffee, current_milk, coffee_used, milk_used):
@@ -77,10 +84,14 @@ def buy_inventory(current_balance, current_coffee, current_milk):
 
 shop_open = True
 while shop_open:
+    #! Add a command so user can view the coffee recipes
     command = input('\nWhat would you like to do? (commands: stay open:"open", close shop:"close", view inventory:"i", view balance:"b", buy inventory: "buy"): ').lower()
     if command == 'open':
         pass
     elif command == 'close':
+        #! Make a tracker for how many coffees sold
+        gross_profit = balance - 50.00
+        print(f'Your gross profit is: ${round(gross_profit, 3)}')
         print('Shop is closed! Goodbye!')
         shop_open = False
         break
@@ -99,15 +110,29 @@ while shop_open:
     
     random_coffee = random.choice(menu)
     print(f'Customer: "Hello, can I have a {random_coffee} please."')
-    make = input('Yes or No:')
+    #! Add a command so user can view the coffee recipes
+    make = input('Yes or No: ')
     if make == 'yes':
         while True:
             #! Maybe add an attempts mechanic, if player messes up too many times, customer gets mad
+            #! Add a command so user can view the coffee recipes
+            command = input('Make a {random_coffee}("m"), or View recipes ("r"): ')
+            if command == 'r':
+                print('------- Recipes ---------')
+                for coffee_name, recipe in recipes.items():
+                    print(f"{coffee_name.title()}: {recipe}")
             print('------- Coffee Machine ---------')
             add_coffee = int(input('Add Coffee: '))
             add_water = int(input('Add Water: '))
             add_milk = int(input('Add Milk: '))
-            print(f'coffee: {add_coffee}g, water: {add_water}ml, milk: {add_milk}ml')
+            print('-'*20)
+            print("Brewing", end="")
+            for _ in range(5):
+                time.sleep(1.0)
+                print(".", end="")
+            print("\nDone!")
+            print('-'*20)
+
 
             # Checks if player has enough inventory and allows them to buy more
             if add_coffee > coffee or add_milk > milk:
@@ -125,7 +150,7 @@ while shop_open:
                     print(f'Here is your {coffee_made}!')
                     if coffee_made == random_coffee:
                         print('Customer: "Thank you!"')
-                        balance = update_balance(balance, 6.75)
+                        balance = update_balance(balance, prices[menu[1]])
                         break
                     else:
                         print(f'Customer: "I asked for a {random_coffee}, not a {coffee_made}? Make me a {random_coffee}!"')
@@ -135,7 +160,7 @@ while shop_open:
                     print(f'Here is your {coffee_made}!')
                     if coffee_made == random_coffee:
                         print('Customer: "Thank you!"')
-                        balance = update_balance(balance, 5.95)
+                        balance = update_balance(balance, prices[menu[2]])
                         break
                     else:
                         print(f'Customer: "I asked for a {random_coffee}, not a {coffee_made}? Make me a {random_coffee}!"')
@@ -149,7 +174,7 @@ while shop_open:
                     print(f'Here is your {coffee_made}!')
                     if coffee_made == random_coffee:
                         print('Customer: "Thank you!"')
-                        balance = update_balance(balance, 3.65)
+                        balance = update_balance(balance, prices[menu[0]])
                         break
                     else:
                         print(f'Customer: "I asked for a {random_coffee}, not a {coffee_made}? Make me a {random_coffee}!"')
@@ -164,5 +189,4 @@ while shop_open:
                 
     else:
         print('Customer: "This place sucks!" :(')
-
 
