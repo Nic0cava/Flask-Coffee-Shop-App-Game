@@ -19,6 +19,7 @@ import time
 shop_name = input("Congratulations on your new coffee shop! What would you like to name your coffee shop?").capitalize()
 print(f"Your shop name is: {shop_name}")
 
+#! Static Variables 
 # Shop Menu: #! Could possibly have this be up to the player?
 menu = ['espresso', 'latte', 'cappuccino']
 # Recipes 
@@ -33,6 +34,8 @@ prices = {menu[0]: 3.65,
 # Latte: $6.75
 # Cappuccino: $5.95
 
+#! Changing Variables (needs session['variable name'] in Flask)
+#! Set at start of the game in Flask app
 # Starting Balance: $50.00
 balance = 50.00
 # Starting Inventory: coffee(250g), milk(1800ml)

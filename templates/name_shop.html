@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Congratulations on your new coffee shop!</h1>
+    <p>What would you like to name your coffee shop:</p>
+    <form method="POST">
+        <!-- we pass in our InfoForm() class object form. -->
+        {{form.hidden_tag()}} <!-- .hidden_tag() is a security method inherited from FlaskForm in our InfoForm() class -->
+        {{form.name.label}}{{form.name()}}
+        {{form.submit()}}
+    </form>
+</div>
+{% endblock %}

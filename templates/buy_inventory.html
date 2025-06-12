@@ -1,0 +1,29 @@
+{% extends "inventory.html" %}
+
+{% block buy_inventory %}
+
+<div class="container">
+    <h1>Lets buy some inventory!</h1>
+     {% for mess in get_flashed_messages() %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>{{mess}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    {% if added_to_cart == False%}
+    <form method="POST">
+        {{form.hidden_tag()}}
+        {{form.coffee_units.label()}}{{form.coffee_units()}}
+        {{form.milk_units.label()}}{{form.milk_units()}}
+        {{form.add_to_cart()}}
+    </form>
+    {% else %}
+    <p>Cart Total: ${{cart_total}}</p>
+    <form method="POST">
+        {{form2.hidden_tag()}}
+        {{form2.confirm_order()}}
+    </form>
+    {% endif %}
+</div>
+
+{% endblock %}

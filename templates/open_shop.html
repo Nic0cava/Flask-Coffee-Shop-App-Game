@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <h1>Welcome to the Coffee Shop Game!</h1>
-    <p>Press the start button to begin</p>
+
+<div class="container" >
+    <h1>Congrats! Your coffee shop is now named: {{session['name']|capitalize}}</h1>
     <form method="POST">
         {{form.hidden_tag()}}
         {{form.submit()}}
     </form>
 </div>
+
 {% endblock %}

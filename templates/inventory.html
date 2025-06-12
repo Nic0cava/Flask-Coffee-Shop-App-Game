@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container" >
+    <h1>Inventory</h1>
+    <p>Coffee: {{ coffee }}g</p>
+    <p>Milk: {{ milk }}ml</p>
+    {% if need_inventory == False %}
+    <form method="POST">
+        {{form.hidden_tag()}}
+        {{form.buy()}}
+    </form>
+    {% endif %}
+</div>
+
+    {% block buy_inventory %}
+
+    {% endblock %}
+
+{% endblock %}
