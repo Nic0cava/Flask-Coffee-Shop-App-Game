@@ -10,21 +10,23 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% endfor %}
-    <form method="POST">
-        {{form.hidden_tag()}}
-        {{form.cancel()}}
-    </form>
-    {% if are_you_sure == False %}
+    <div class="d-flex gap-4">
+        <form method="POST">
+            {{form.hidden_tag()}}
+            {{form.cancel()}}
+        </form>
+        {% if are_you_sure == False %}
         <form method="POST">
             {{form2.hidden_tag()}}
             {{form2.continue_submit()}}
         </form>
-    {% else %}
+        {% else %}
         <form method="POST">
             {{form3.hidden_tag()}}
             {{form3.continue_anyway()}}
         </form>
-    {% endif %}
+        {% endif %}
+    </div>
 </div>
 
 {% endblock %}

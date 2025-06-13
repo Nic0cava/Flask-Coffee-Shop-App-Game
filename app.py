@@ -39,13 +39,22 @@ class AddToCartForm(FlaskForm):
 
 class ConfirmOrderForm(FlaskForm):
     confirm_order = SubmitField("Confirm Order")
+
+class MakeCoffeeForm(FlaskForm):
+    make = SubmitField("Make Coffee")
+
+class RejectForm(FlaskForm):
+    reject = SubmitField("Reject")
+
+class NextCustomerForm(FlaskForm):
+    next_customer = SubmitField("Next Customer")
 #! Static Variables
 # Shop Menu:
 menu = ['espresso', 'latte', 'cappuccino']
 # Recipes 
-recipes = {menu[0]:"18g coffee, 50ml water, 0ml milk",
-           menu[1]:"24g coffee, 200ml water, 150ml milk",
-           menu[2]:"24g coffee, 250ml water, 100ml milk"}
+recipes = {menu[0]:["18g coffee","50ml water","0ml milk"],
+           menu[1]:["24g coffee","200ml water","150ml milk"],
+           menu[2]:["24g coffee","250ml water","100ml milk"]}
 # Coffee Prices:
 prices = {menu[0]: 3.65,
           menu[1]: 6.75,
@@ -67,6 +76,8 @@ def start():
         'coffee': 250,
         'milk': 1800
     }
+    session['random_coffee'] = random.choice(menu)
+    session['customer_number'] = 1
     form = StartForm()
     if form.validate_on_submit():
         return redirect(url_for('name_shop'))
@@ -118,9 +129,11 @@ def inventory():
 
 @app.route('/buy_inventory', methods=['GET','POST'])
 def buy_inventory():
+    # insufficient_funds = False
     added_to_cart = False
     form = AddToCartForm()
     form2 = ConfirmOrderForm()
+    form3 = CancelForm()
     inventory = session.get('inventory', {})
     cart_total = session['cart_total']
     
@@ -136,25 +149,58 @@ def buy_inventory():
         milk_cost = session['milk_units'] * 4.24
         session['cart_total'] = coffee_cost + milk_cost
         cart_total = session['cart_total']
-    elif form2.validate_on_submit():
+    elif form2.confirm_order.data and form2.validate_on_submit():
+        if cart_total > session['balance']:
+            # insufficient_funds = True
+            flash(f"Insufficient funds: The transfer cannot be completed as there is not enough available balance in your account!", "insufficient")
+            return redirect(url_for('buy_inventory'))
         # Update inventory
         inventory['coffee'] += session['coffee_units'] * 250
         inventory['milk'] += session['milk_units'] * 1800
         session['inventory'] = inventory  # Save back to session
 
         # Update balance
-        session['balance'] -= cart_total
-
-        flash(f"Added {session['coffee_units']*250}g coffee and {session['milk_units']*1800}ml milk to inventory.")
+        session['balance'] -= round(cart_total, 2)
+        flash(f"Success: Added {session['coffee_units']*250}g coffee and {session['milk_units']*1800}ml milk to inventory.", "sufficient")
         return redirect(url_for('buy_inventory'))
+    elif form3.cancel.data and form3.validate_on_submit():
+        added_to_cart = False
 
     coffee = inventory['coffee']
     milk = inventory['milk']
-    return render_template('buy_inventory.html', coffee=coffee, milk=milk, form=form, cart_total=cart_total, added_to_cart=added_to_cart, form2=form2)
+    return render_template('buy_inventory.html', coffee=coffee, milk=milk, form=form, cart_total=cart_total, added_to_cart=added_to_cart, form2=form2, form3=form3)
 
-@app.route('/front_desk')
+@app.route('/front_desk', methods=['GET','POST'])
 def front_desk():
-    return render_template('front_desk.html')
+    rejected = False
+    random_coffee = session['random_coffee']
+    customer_num = session['customer_number']
+    customer_mess = f"Hello, can I have a {random_coffee} please."
+    form = RejectForm()
+    form2 = MakeCoffeeForm()
+    form3 = NextCustomerForm()
+    if form.reject.data and form.validate_on_submit():
+        rejected = True
+        customer_mess = f"This place sucks :("
+    elif form2.make.data and form2.validate_on_submit():
+        return redirect(url_for('coffee_machine'))
+    elif form3.next_customer.data and form3.validate_on_submit():
+        rejected = False
+        session['random_coffee'] = random.choice(menu)
+        session['customer_number'] += 1
+        return redirect(url_for('front_desk'))
+    return render_template('front_desk.html', random_coffee=random_coffee, customer_mess=customer_mess, customer_num=customer_num, form=form, form2=form2, form3=form3, rejected=rejected)
+
+@app.route('/coffee_machine', methods=['GET','POST'])
+def coffee_machine():
+    menu_items = []
+    for item in menu:
+        menu_items.append(item)
+    all_ingredients = []
+    for ingredients in recipes.values():
+        all_ingredients.extend(ingredients)
+
+    return render_template('coffee_machine.html', menu_items=menu_items, all_ingredients=all_ingredients)
 
 
 

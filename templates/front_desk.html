@@ -3,7 +3,24 @@
 {% block content %}
 
 <div class="container" >
-    <h1>This is the front desk page!</h1>
+    <h1>Customer #{{customer_num}}: "{{customer_mess}}"</h1>
+    <div class="d-flex gap-4">
+        {% if rejected == False%}
+        <form method="POST">
+            {{form.hidden_tag()}}
+            {{form.reject()}}
+        </form>
+        <form method="POST">
+            {{form2.hidden_tag()}}
+            {{form2.make()}}
+        </form>
+        {% else %}
+        <form method="POST">
+            {{form3.hidden_tag()}}
+            {{form3.next_customer()}}
+        </form>
+        {% endif %}
+    </div>
 </div>
 
 {% endblock %}

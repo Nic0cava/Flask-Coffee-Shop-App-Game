@@ -30,7 +30,7 @@
           <a class="nav-link" href="{{ url_for('inventory') }}">Inventory</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="#">Balance: ${{session['balance']}}</a>
+            <a class="nav-link active" href="#">Available Balance: ${{session['balance'] | round(2)}}</a>
         </li>
         </ul>
         </div>

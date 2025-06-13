@@ -4,12 +4,18 @@
 
 <div class="container">
     <h1>Lets buy some inventory!</h1>
-     {% for mess in get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        {% if category=="insufficient" %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {% else %}
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>{{mess}}</strong>
+        {% endif %}
+        <strong>{{message}}</strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% endfor %}
+    {% endwith %}
     {% if added_to_cart == False%}
     <form method="POST">
         {{form.hidden_tag()}}
@@ -18,12 +24,18 @@
         {{form.add_to_cart()}}
     </form>
     {% else %}
-    <p>Cart Total: ${{cart_total}}</p>
-    <form method="POST">
-        {{form2.hidden_tag()}}
-        {{form2.confirm_order()}}
-    </form>
-    {% endif %}
+    <p>Cart Total: ${{cart_total | round(3)}}</p>
+    <div class="d-flex gap-4">
+        <form method="POST">
+            {{form3.hidden_tag()}}
+            {{form3.cancel()}}
+        </form>
+        <form method="POST">
+            {{form2.hidden_tag()}}
+            {{form2.confirm_order()}}
+        </form>
+        {% endif %}
+    </div>
 </div>
 
 {% endblock %}
