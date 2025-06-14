@@ -2,8 +2,12 @@
 
 {% block content %}
 <div class="container">
+    {% if named == false %}
     <h1>Congratulations on your new coffee shop!</h1>
     <p>What would you like to name your coffee shop:</p>
+    {% else %}
+    <p>What would you like to rename your coffee shop:</p>
+    {% endif %}
     <form method="POST">
         <!-- we pass in our InfoForm() class object form. -->
         {{form.hidden_tag()}} <!-- .hidden_tag() is a security method inherited from FlaskForm in our InfoForm() class -->

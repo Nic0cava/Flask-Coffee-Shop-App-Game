@@ -1,6 +1,6 @@
 from flask import Flask, render_template, session, redirect, url_for, flash
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField
+from wtforms import StringField, SubmitField, IntegerField, SelectField
 from wtforms.validators import InputRequired, NumberRange
 import os
 import random
@@ -42,6 +42,20 @@ class ConfirmOrderForm(FlaskForm):
 
 class MakeCoffeeForm(FlaskForm):
     make = SubmitField("Make Coffee")
+class GiveCoffeeForm(FlaskForm):
+    give = SubmitField("Give Coffee To Customer")
+
+class CoffeeMachineForm(FlaskForm):
+    add_coffee = SelectField(u'Coffee:',choices=[('18g','18g'), ('24g','24g')])
+    add_water = SelectField(u'Water:',choices=[('50ml','50ml'), ('200ml','200ml'), ('250ml','250ml')])
+    add_milk = SelectField(u'Milk:',choices=[('0ml','0ml'), ('100ml','100ml'), ('150ml','150ml')])
+    make = SubmitField("Make")
+
+class RemakeForm(FlaskForm):
+    remake = SubmitField("Remake")
+
+class DoneForm(FlaskForm):
+    done = SubmitField("Done")
 
 class RejectForm(FlaskForm):
     reject = SubmitField("Reject")
@@ -78,6 +92,8 @@ def start():
     }
     session['random_coffee'] = random.choice(menu)
     session['customer_number'] = 1
+    session['named'] = False
+    session['accepted'] = False
     form = StartForm()
     if form.validate_on_submit():
         return redirect(url_for('name_shop'))
@@ -86,11 +102,13 @@ def start():
 @app.route('/name_shop', methods=['GET','POST'])
 def name_shop():
     session.pop('name', None)
+    named = session['named']
     form = ShopNameForm()
     if form.validate_on_submit():
+        session['named'] = True
         session['name'] = form.name.data
         return redirect(url_for('open_shop'))
-    return render_template('name_shop.html', form=form)
+    return render_template('name_shop.html', form=form, named=named)
 
 @app.route('/open_shop', methods=['GET','POST'])
 def open_shop():
@@ -129,7 +147,6 @@ def inventory():
 
 @app.route('/buy_inventory', methods=['GET','POST'])
 def buy_inventory():
-    # insufficient_funds = False
     added_to_cart = False
     form = AddToCartForm()
     form2 = ConfirmOrderForm()
@@ -151,7 +168,6 @@ def buy_inventory():
         cart_total = session['cart_total']
     elif form2.confirm_order.data and form2.validate_on_submit():
         if cart_total > session['balance']:
-            # insufficient_funds = True
             flash(f"Insufficient funds: The transfer cannot be completed as there is not enough available balance in your account!", "insufficient")
             return redirect(url_for('buy_inventory'))
         # Update inventory
@@ -170,39 +186,62 @@ def buy_inventory():
     milk = inventory['milk']
     return render_template('buy_inventory.html', coffee=coffee, milk=milk, form=form, cart_total=cart_total, added_to_cart=added_to_cart, form2=form2, form3=form3)
 
+
 @app.route('/front_desk', methods=['GET','POST'])
 def front_desk():
+    accepted = session['accepted']
     rejected = False
     random_coffee = session['random_coffee']
     customer_num = session['customer_number']
-    customer_mess = f"Hello, can I have a {random_coffee} please."
+    customer_mess = f"Hello, can I have a {random_coffee} please." #! Make a list of each message
     form = RejectForm()
     form2 = MakeCoffeeForm()
-    form3 = NextCustomerForm()
+    form3 = NextCustomerForm() #! show this after you give coffee also
+    form4 = GiveCoffeeForm()
     if form.reject.data and form.validate_on_submit():
         rejected = True
         customer_mess = f"This place sucks :("
     elif form2.make.data and form2.validate_on_submit():
+        session['accepted'] = True
         return redirect(url_for('coffee_machine'))
     elif form3.next_customer.data and form3.validate_on_submit():
         rejected = False
         session['random_coffee'] = random.choice(menu)
         session['customer_number'] += 1
         return redirect(url_for('front_desk'))
-    return render_template('front_desk.html', random_coffee=random_coffee, customer_mess=customer_mess, customer_num=customer_num, form=form, form2=form2, form3=form3, rejected=rejected)
+    elif form4.give.data and form4.validate_on_submit():
+        #! check to see if the_made_coffee matches customers order, if not, customer rejects,so make new coffee, else success, Update Balance with added sale
+        #! store session['the_made_coffee'] = latte <-- based on user input from CoffeeMachineForm()
+        session['accepted'] = False
+        return redirect(url_for('front_desk'))
+    return render_template('front_desk.html', random_coffee=random_coffee, customer_mess=customer_mess, customer_num=customer_num, form=form, form2=form2, form3=form3, form4=form4, rejected=rejected, accepted=accepted)
 
 @app.route('/coffee_machine', methods=['GET','POST'])
 def coffee_machine():
+    made = False
     menu_items = []
     for item in menu:
         menu_items.append(item)
     all_ingredients = []
     for ingredients in recipes.values():
         all_ingredients.extend(ingredients)
+    form = CoffeeMachineForm()
+    form2 = RemakeForm()
+    form3 = DoneForm()
+    if form.make.data and form.validate_on_submit():
+        #! Update Inventory
+        #! Check to see what drink was made and store in (if not in recipes, value = None) <-- None will always get rejected by customer
+        #! session['the_made_coffee'] = latte
+        made = True
+    if form2.remake.data and form2.validate_on_submit():
+        return redirect(url_for('coffee_machine'))
+    if form3.done.data and form3.validate_on_submit():
+        return redirect(url_for('front_desk'))
+    
 
-    return render_template('coffee_machine.html', menu_items=menu_items, all_ingredients=all_ingredients)
+    return render_template('coffee_machine.html', menu_items=menu_items, all_ingredients=all_ingredients, form=form, made=made, form2=form2, form3=form3)
 
 
 
 if __name__=="__main__":
-    app.run(debug=True)
+    app.run(debug=True) #! turn off before deployment

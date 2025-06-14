@@ -63,6 +63,29 @@
     </div>
     <div class="col-md-8 border">
       <h3>The Coffee Machine</h3>
+        <form method="POST">
+        {{form.hidden_tag()}}
+        {{form.add_coffee.label}}{{form.add_coffee()}}
+        {{form.add_water.label}}{{form.add_water()}}
+        {{form.add_milk.label}}{{form.add_milk()}}
+        {{form.make}}
+        </form>
+        {% if made %}
+        <h1>COFFEE</h1>
+        <h1>IMAGE</h1>
+        <h1>GOES</h1>
+        <h1>HERE</h1>
+        <div class="d-flex gap-4 justify-content-center">
+            <form method="POST">
+                {{form2.hidden_tag()}}
+                {{form2.remake()}}
+            </form>
+            <form method="POST">
+                {{form3.hidden_tag()}}
+                {{form3.done()}}
+            </form>
+        </div>
+        {% endif %}
     </div>
   </div>
 </div>

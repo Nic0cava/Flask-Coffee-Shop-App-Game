@@ -2,18 +2,26 @@
 
 {% block content %}
 
-<div class="container" >
+<div class="container text-center" >
     <h1>Customer #{{customer_num}}: "{{customer_mess}}"</h1>
-    <div class="d-flex gap-4">
+    <div class="d-flex gap-4 justify-content-center">
         {% if rejected == False%}
+        {% if accepted == False %}
         <form method="POST">
             {{form.hidden_tag()}}
             {{form.reject()}}
         </form>
+        {% endif %}
         <form method="POST">
             {{form2.hidden_tag()}}
             {{form2.make()}}
         </form>
+        {% if accepted %}
+        <form method="POST">
+            {{form4.hidden_tag()}}
+            {{form4.give()}}
+        </form>
+        {% endif %}
         {% else %}
         <form method="POST">
             {{form3.hidden_tag()}}
