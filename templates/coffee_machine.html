@@ -79,25 +79,21 @@
         {% endfor %}
         {% if made %}
         {% if session['the_made_coffee'] == 'espresso' %}
-        <h1>ESPRESSO</h1>
-        <h1>IMAGE</h1>
-        <h1>GOES</h1>
-        <h1>HERE</h1>
+        <div class="m-4">
+            <img src="../static/Espresso.png" alt="Espresso">
+        </div>
         {% elif session['the_made_coffee'] == 'latte' %}
-        <h1>LATTE</h1>
-        <h1>IMAGE</h1>
-        <h1>GOES</h1>
-        <h1>HERE</h1>
+        <div class="m-4">
+            <img src="../static/Latte.png" alt="Latte">
+        </div>
         {% elif session['the_made_coffee'] == 'cappuccino' %}
-        <h1>CAPPUCCINO</h1>
-        <h1>IMAGE</h1>
-        <h1>GOES</h1>
-        <h1>HERE</h1>
+        <div class="m-4">
+            <img src="../static/Cappuccino.png" alt="Cappuccino">
+        </div>
         {% else %}
-        <h1>MYSTERY</h1>
-        <h1>IMAGE</h1>
-        <h1>GOES</h1>
-        <h1>HERE</h1>
+        <div class="m-4">
+            <img src="../static/Mystery_Coffee.png" alt="Mystery Coffee">
+        </div>
         {% endif %}
         <div class="d-flex gap-4 justify-content-center">
             <form method="POST">
