@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container text-center" >
+    <h1>Game Over!</h1>
+    <h2>You did not have enough ingredients and the available balance to keep your shop open</h2>
+    <div class="d-flex gap-4 justify-content-center">
+        <form method="POST">
+            {{form.hidden_tag()}}
+            {{form.restart()}}
+        </form>
+    </div>
+</div>
+
+{% endblock %}

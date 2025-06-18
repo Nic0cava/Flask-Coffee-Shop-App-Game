@@ -3,6 +3,7 @@
 {% block content %}
 <div class="container text-center border">
 <h1>This is the coffee machine page!</h1>
+<p>DEBUG: the_made_coffee is {{ session['the_made_coffee'] }}</p>
   <div class="container text-center border">
   <div class="row justify-content-md-center">
     <div class="col col-md-4 border">
@@ -61,7 +62,7 @@
         </div>
         </div>
     </div>
-    <div class="col-md-8 border">
+    <div class="col-md-8 border mb-6 mb-md-0">
       <h3>The Coffee Machine</h3>
         <form method="POST">
         {{form.hidden_tag()}}
@@ -70,11 +71,34 @@
         {{form.add_milk.label}}{{form.add_milk()}}
         {{form.make}}
         </form>
+        {% for mess in get_flashed_messages() %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{mess}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
         {% if made %}
-        <h1>COFFEE</h1>
+        {% if session['the_made_coffee'] == 'espresso' %}
+        <h1>ESPRESSO</h1>
         <h1>IMAGE</h1>
         <h1>GOES</h1>
         <h1>HERE</h1>
+        {% elif session['the_made_coffee'] == 'latte' %}
+        <h1>LATTE</h1>
+        <h1>IMAGE</h1>
+        <h1>GOES</h1>
+        <h1>HERE</h1>
+        {% elif session['the_made_coffee'] == 'cappuccino' %}
+        <h1>CAPPUCCINO</h1>
+        <h1>IMAGE</h1>
+        <h1>GOES</h1>
+        <h1>HERE</h1>
+        {% else %}
+        <h1>NONE COFFEE</h1>
+        <h1>IMAGE</h1>
+        <h1>GOES</h1>
+        <h1>HERE</h1>
+        {% endif %}
         <div class="d-flex gap-4 justify-content-center">
             <form method="POST">
                 {{form2.hidden_tag()}}

@@ -17,11 +17,21 @@
     {% endfor %}
     {% endwith %}
     {% if added_to_cart == False%}
-    <form method="POST">
-        {{form.hidden_tag()}}
-        {{form.coffee_units.label()}}{{form.coffee_units()}}
-        {{form.milk_units.label()}}{{form.milk_units()}}
-        {{form.add_to_cart()}}
+    <form method="POST" class="container">
+    {{ form.hidden_tag() }}
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            {{ form.coffee_units.label() }}
+            {{ form.coffee_units() }}
+        </div>
+        <div class="col-md-4 mb-3">
+            {{ form.milk_units.label() }}
+            {{ form.milk_units() }}
+        </div>
+        <div class="col-md-4 d-flex align-items-end mb-3">
+            {{ form.add_to_cart() }}
+        </div>
+    </div>
     </form>
     {% else %}
     <p>Cart Total: ${{cart_total | round(3)}}</p>

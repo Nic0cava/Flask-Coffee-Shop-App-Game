@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container text-center" >
+    <h1>You Won!</h1>
+    <h2>You reached the revenue target of $50</h2>
+    <h3>You sold a total of {{session['num_coffees_sold']}} coffees!</h3>
+    <div class="d-flex gap-4 justify-content-center">
+        <form method="POST">
+            {{form.hidden_tag()}}
+            {{form.restart()}}
+        </form>
+        <form method="POST">
+            {{form2.hidden_tag()}}
+            {{form2.continue_playing()}}
+        </form>
+    </div>
+</div>
+
+{% endblock %}

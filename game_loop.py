@@ -147,6 +147,7 @@ while shop_open:
 
             # updates inventory after ingredients are used
             coffee, milk = update_inventory(coffee, milk, add_coffee, add_milk)
+            
             if add_coffee == 24:
                 if add_water == 200 and add_milk == 150:
                     coffee_made = menu[1]
