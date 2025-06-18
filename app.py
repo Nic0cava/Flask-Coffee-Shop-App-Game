@@ -209,7 +209,7 @@ def front_desk():
     rejected = False
     random_coffee = session['random_coffee']
     customer_num = session['customer_number']
-    customer_messages = [f"Hello, can I have a {random_coffee} please.", f"Thank you!", f"This place sucks :(", f"I asked for a {random_coffee}, not a {session['the_made_coffee']}? Make me a {random_coffee}!"] #! Make a list of each message
+    customer_messages = [f"Hello, can I have a {random_coffee} please.", f"Thank you!", f"This place sucks :(", f"I asked for a {random_coffee}, not a {session['the_made_coffee']}? Make me a {random_coffee}!", f"What kind of coffee is this?! Make me {random_coffee}!"] #! Make a list of each message
     customer_mess = customer_messages[0]
     form = RejectForm()
     form2 = MakeCoffeeForm()
@@ -227,7 +227,10 @@ def front_desk():
         session['customer_number'] += 1
         return redirect(url_for('front_desk'))
     elif form4.give.data and form4.validate_on_submit():
-        if session['random_coffee'] == session['the_made_coffee']:
+        if session['the_made_coffee'] == 'mystery':
+            customer_mess = customer_messages[4]
+            session['the_made_coffee'] = None
+        elif session['random_coffee'] == session['the_made_coffee']:
             session['sold_coffee'] = True
             customer_mess = customer_messages[1]
             session['num_coffees_sold'] += 1
@@ -293,7 +296,7 @@ def coffee_machine():
         elif added_coffee == 24 and added_water == 250 and added_milk == 100:
             session['the_made_coffee'] = 'cappuccino'
         else:
-            session['the_made_coffee'] = None
+            session['the_made_coffee'] = "mystery"
 
         made = True
     if form2.remake.data and form2.validate_on_submit():
