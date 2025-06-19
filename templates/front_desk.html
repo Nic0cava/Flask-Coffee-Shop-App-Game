@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container text-center" >
-    <h1>Customer #{{customer_num}}: "{{customer_mess}}"</h1>
+    <h1><u>Customer #{{customer_num}}</u>: "{{customer_mess}}"</h1>
     <div class="d-flex gap-4 justify-content-center">
         {% if rejected == False%}
             {% if accepted == False %}
@@ -29,6 +29,23 @@
         </form>
         {% endif %}
     </div>
+    {% if session['the_made_coffee'] == 'espresso' %}
+        <div class="m-4">
+            <img src="../static/Espresso.png" alt="Espresso">
+        </div>
+        {% elif session['the_made_coffee'] == 'latte' %}
+        <div class="m-4">
+            <img src="../static/Latte.png" alt="Latte">
+        </div>
+        {% elif session['the_made_coffee'] == 'cappuccino' %}
+        <div class="m-4">
+            <img src="../static/Cappuccino.png" alt="Cappuccino">
+        </div>
+        {% elif session['the_made_coffee'] == 'mystery' %}
+        <div class="m-4">
+            <img src="../static/Mystery_Coffee.png" alt="Mystery Coffee">
+        </div>
+        {% endif %}
 </div>
 
 {% endblock %}

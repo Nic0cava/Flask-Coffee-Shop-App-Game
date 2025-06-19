@@ -4,12 +4,16 @@
 
 <div class="container text-center" >
     <h1>Are you sure you want to close your coffee shop?</h1>
-     {% for mess in get_flashed_messages() %}
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>{{mess}}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endfor %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            {% if category=="close_shop" %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>{{message}}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+        {% endfor %}
+        {% endwith %}
     <div class="d-flex gap-4 justify-content-center">
         <form method="POST">
             {{form.hidden_tag()}}

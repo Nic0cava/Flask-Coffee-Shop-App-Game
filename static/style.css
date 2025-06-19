@@ -8,3 +8,120 @@ img {
   image-rendering: pixelated;
   image-rendering: crisp-edges; /* for better browser support */
 }
+
+/* Targets all submit buttons inside forms */
+form input[type="submit"],
+form button[type="submit"] {
+  background-color: #1d1c16;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+form input[type="submit"]:hover,
+form button[type="submit"]:hover {
+  background-color: #423c30;
+}
+
+body{
+    background-color: #ca9064;
+}
+
+/* Navbar color: #dfcbc6
+    darker coffee: #8c664a
+    lighter coffee: #ca9064 
+    Form Buttons: #1d1c16 
+    on button hover: #423c30 */
+
+.custom-navbar {
+  background-color: #fff3e0 ;
+}
+
+.navbar-brand,
+.nav-link {
+  color: #1d1c16;
+}
+
+.nav-link:hover {
+  color: #423c30;
+}
+
+
+/* Style StringField (text) and IntegerField (number) */
+input[type="text"],
+input[type="number"] {
+  background-color: #fff3e0;
+  color: #1d1c16; 
+  border: 1px solid #fff3e0;
+  padding: 0.5rem;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Style SelectField */
+select {
+  background-color: #fff3e0;
+  color: #1d1c16;
+  border: 1px solid #8c664a;
+  padding: 0.3rem;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  background-color: #fff3e0;
+  border-color: #8c664a;
+  outline: none;
+}
+
+
+/* Header button background and text */
+.accordion-button {
+  background-color: #ca9064;
+  color: #1d1c16;         
+  box-shadow: none;
+  border: none;
+}
+
+/* Header button on hover/focus */
+.accordion-button:hover,
+.accordion-button:focus {
+  background-color: #1d1c16;
+  color: #fff;
+}
+
+.accordion-button.collapsed {
+  background-color: #1d1c16;
+  color: #fff;
+}
+
+.accordion-body {
+  background-color: #fff3e0;
+  color: #1d1c16;
+}
+
+.accordion-button {
+  box-shadow: none;
+  border: none;
+}
+
+.accordion-item {
+  border: none;
+}
+
+/* Expanded (active/open) state */
+.accordion-button:not(.collapsed) {
+  background-color: #1d1c16;
+  color: #fff;
+}
+
+.open_shop_button {
+    margin: 1rem;
+}

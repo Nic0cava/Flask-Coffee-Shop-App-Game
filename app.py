@@ -137,7 +137,7 @@ def close_shop():
         return redirect(url_for('front_desk'))
     elif form2.continue_submit.data and form2.validate_on_submit():
         are_you_sure = True
-        flash('WARNING: By continuing, all game data will be reset!')
+        flash('WARNING: By continuing, all game data will be reset!', "close_shop")
     elif form3.continue_anyway.data and form3.validate_on_submit():
         return redirect(url_for('start'))
     return render_template('close_shop.html', form=form, form2=form2, form3=form3, are_you_sure= are_you_sure)
@@ -209,15 +209,39 @@ def front_desk():
     rejected = False
     random_coffee = session['random_coffee']
     customer_num = session['customer_number']
-    customer_messages = [f"Hello, can I have a {random_coffee} please.", f"Thank you!", f"This place sucks :(", f"I asked for a {random_coffee}, not a {session['the_made_coffee']}? Make me a {random_coffee}!", f"What kind of coffee is this?! Make me {random_coffee}!"] #! Make a list of each message
-    customer_mess = customer_messages[0]
+    customer_messages = [
+        [f"Hello, can I have a {random_coffee} please.",
+        f"I'd like a {random_coffee}, thanks.",
+        f"Could you make me a {random_coffee}?",
+        f"Hey there, one {random_coffee}, please."],
+        
+        [f"Thank you!",
+        f"This is great, thanks!",
+        f"Yum! Appreciate it!",
+        f"Delicious! Thanks a lot!"],
+
+        [f"This place sucks :(",
+        f"Ugh, worst coffee ever...",
+        f"I'm never coming back!",
+        f"Totally disappointed..."],
+
+        [f"I asked for a {random_coffee}, not a {session['the_made_coffee']}!",
+        f"Seriously? I wanted a {random_coffee}, not a {session['the_made_coffee']}!",
+        f"Nope, that's not a {random_coffee}!"],
+        
+        [f"What kind of coffee is this?! Make me {random_coffee}!",
+        f"This is terrible! Just give me a {random_coffee}!",
+        f"Not what I asked for! I want a {random_coffee}!"]
+    ]
+
+    customer_mess = random.choice(customer_messages[0])
     form = RejectForm()
     form2 = MakeCoffeeForm()
     form3 = NextCustomerForm() #! show this after you give coffee also
     form4 = GiveCoffeeForm()
     if form.reject.data and form.validate_on_submit():
         rejected = True
-        customer_mess = customer_messages[2]
+        customer_mess = random.choice(customer_messages[2])
     elif form2.make.data and form2.validate_on_submit():
         session['accepted'] = True
         return redirect(url_for('coffee_machine'))
@@ -228,11 +252,11 @@ def front_desk():
         return redirect(url_for('front_desk'))
     elif form4.give.data and form4.validate_on_submit():
         if session['the_made_coffee'] == 'mystery':
-            customer_mess = customer_messages[4]
+            customer_mess = random.choice(customer_messages[4])
             session['the_made_coffee'] = None
         elif session['random_coffee'] == session['the_made_coffee']:
             session['sold_coffee'] = True
-            customer_mess = customer_messages[1]
+            customer_mess = random.choice(customer_messages[1])
             session['num_coffees_sold'] += 1
 
             # Update balance
@@ -252,7 +276,7 @@ def front_desk():
                 session['customer_number'] += 1
                 return redirect(url_for('you_won'))
         else:
-            customer_mess = customer_messages[3]
+            customer_mess = random.choice(customer_messages[3])
             session['the_made_coffee'] = None
     return render_template('front_desk.html', random_coffee=random_coffee, customer_mess=customer_mess, customer_num=customer_num, form=form, form2=form2, form3=form3, form4=form4, rejected=rejected, accepted=accepted)
 
@@ -279,7 +303,7 @@ def coffee_machine():
         # Check if player has enough inventory
         if added_coffee > session['inventory']['coffee'] or added_milk > session['inventory']['milk']:
             session["inventory_lockout"] = True
-            flash("Not enough ingredients in inventory! Go to inventory to buy more!")
+            flash("Not enough ingredients in inventory! Go to inventory to buy more!", "insufficient_inventory")
             return redirect(url_for('coffee_machine'))
 
         session['bankruptcy'] = False

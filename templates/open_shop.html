@@ -3,11 +3,33 @@
 {% block content %}
 
 <div class="container text-center" >
-    <h1>Congrats! Your coffee shop is now named: {{session['name']|capitalize}}</h1>
-    <form method="POST">
-        {{form.hidden_tag()}}
-        {{form.submit()}}
-    </form>
+    <h1>Congrats! Your coffee shop is now named:</h1>
+    <h1>{{session['name']|title}}</h1>
+    <div class="accordion" id="myAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            How To Play
+            </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                <ul class="text-start">
+                <li>Earn over $50 to win!</li>
+                <li>But be careful to manage your inventory and cash, if you don't have enough to continue, its game over!</li>
+                <li>Pressing on your shop name will take you to the front desk, where you interact with your customers!</li>
+                <li>Have Fun!</li>
+                </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="open_shop_button">
+        <form method="POST">
+            {{form.hidden_tag()}}
+            {{form.submit()}}
+        </form>
+    </div>
 </div>
 
 {% endblock %}
