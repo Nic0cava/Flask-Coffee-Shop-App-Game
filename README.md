@@ -33,9 +33,8 @@ Welcome to **Coffee Shop Game**, a fun and interactive web-based game built with
 
 ## ✨ Screenshots
 
-_Add a screenshot of your game interface here. Example:_
+![Coffee_Shop_Screenshot](https://github.com/user-attachments/assets/092b7e3c-bda8-4094-8584-54197ee5f833)
 
-![Coffee Shop Screenshot](static/screenshot.png)
 
 ## 🙌 Acknowledgements
 
