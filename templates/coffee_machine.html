@@ -62,8 +62,7 @@
         </div>
         </div>
     </div>
-    <div class="col-md-8 mb-6 mb-md-0">
-      <h3>The Coffee Machine</h3>
+    <div class="col-md-8 mb-6 mb-md-0 pt-4 coffee-machine-background">
         <form method="POST">
         {{form.hidden_tag()}}
         {{form.add_coffee.label}}{{form.add_coffee()}}
@@ -82,20 +81,21 @@
             {% endfor %}
         {% endwith %}
         {% if made %}
+        
         {% if session['the_made_coffee'] == 'espresso' %}
-        <div class="m-4">
+        <div class="m-4 coffee-container">
             <img src="../static/Espresso.png" alt="Espresso">
         </div>
         {% elif session['the_made_coffee'] == 'latte' %}
-        <div class="m-4">
+        <div class="m-4 coffee-container">
             <img src="../static/Latte.png" alt="Latte">
         </div>
         {% elif session['the_made_coffee'] == 'cappuccino' %}
-        <div class="m-4">
+        <div class="m-4 coffee-container">
             <img src="../static/Cappuccino.png" alt="Cappuccino">
         </div>
         {% else %}
-        <div class="m-4">
+        <div class="m-4 coffee-container">
             <img src="../static/Mystery_Coffee.png" alt="Mystery Coffee">
         </div>
         {% endif %}
