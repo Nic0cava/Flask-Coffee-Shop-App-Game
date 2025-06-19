@@ -6,10 +6,9 @@ img {
   width: 200px;
   height: 200px;
   image-rendering: pixelated;
-  image-rendering: crisp-edges; /* for better browser support */
+  image-rendering: crisp-edges;
 }
 
-/* Targets all submit buttons inside forms */
 form input[type="submit"],
 form button[type="submit"] {
   background-color: #1d1c16;
@@ -31,12 +30,6 @@ body{
     background-color: #ca9064;
 }
 
-/* Navbar color: #dfcbc6
-    darker coffee: #8c664a
-    lighter coffee: #ca9064 
-    Form Buttons: #1d1c16 
-    on button hover: #423c30 */
-
 .custom-navbar {
   background-color: #fff3e0 ;
 }
@@ -51,7 +44,6 @@ body{
 }
 
 
-/* Style StringField (text) and IntegerField (number) */
 input[type="text"],
 input[type="number"] {
   background-color: #fff3e0;
@@ -63,7 +55,6 @@ input[type="number"] {
   box-sizing: border-box;
 }
 
-/* Style SelectField */
 select {
   background-color: #fff3e0;
   color: #1d1c16;
@@ -82,7 +73,6 @@ select:focus {
 }
 
 
-/* Header button background and text */
 .accordion-button {
   background-color: #ca9064;
   color: #1d1c16;         
@@ -90,7 +80,6 @@ select:focus {
   border: none;
 }
 
-/* Header button on hover/focus */
 .accordion-button:hover,
 .accordion-button:focus {
   background-color: #1d1c16;
@@ -107,16 +96,10 @@ select:focus {
   color: #1d1c16;
 }
 
-.accordion-button {
-  box-shadow: none;
-  border: none;
-}
-
 .accordion-item {
   border: none;
 }
 
-/* Expanded (active/open) state */
 .accordion-button:not(.collapsed) {
   background-color: #1d1c16;
   color: #fff;
@@ -128,7 +111,6 @@ select:focus {
 
 .coffee-machine-background {
     background-image: url('/static/Coffee_Machine.png');
-    /* background-size: contain; */
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
@@ -144,9 +126,9 @@ select:focus {
 
 .coffee-display-container {
   position: relative;
-  height: 300px; /* Adjust to your layout */
-  background-color: #f5f5f5; /* Optional */
-  border: 1px solid #ccc;    /* Optional */
+  height: 300px; 
+  background-color: #f5f5f5; 
+  border: 1px solid #ccc;    
   margin: 2rem;
 }
 

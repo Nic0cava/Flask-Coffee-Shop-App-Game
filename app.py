@@ -1,74 +1,13 @@
 from flask import Flask, render_template, session, redirect, url_for, flash
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField, SelectField
-from wtforms.validators import InputRequired, NumberRange
+from forms import StartForm, ShopNameForm, RestartForm, OpenForm, ContinueForm, ContinueAnywayForm, CancelForm, ContinuePlayingForm, BuyForm, AddToCartForm, ConfirmOrderForm, MakeCoffeeForm, GiveCoffeeForm, CoffeeMachineForm, RemakeForm, DoneForm, RejectForm, NextCustomerForm
 import os
 import random
 
 app = Flask(__name__)
 
-app.secret_key = os.environ.get('SECRET_KEY', 'mysecretkey')
+app.secret_key = os.environ.get('SECRET_KEY')
 
-#! Form Classes
-class StartForm(FlaskForm):
-    submit = SubmitField("Start")
-#! Asking user to name their coffee shop
-class ShopNameForm(FlaskForm):
-    name = StringField("Enter Name:")
-    submit = SubmitField('Submit')
-
-class RestartForm(FlaskForm):
-    restart = SubmitField('Restart Game')
-
-class OpenForm(FlaskForm):
-    submit = SubmitField("Open Shop")
-
-class ContinueForm(FlaskForm):
-    continue_submit = SubmitField("Continue")
-
-class ContinueAnywayForm(FlaskForm):
-    continue_anyway = SubmitField("Continue Anyway")
-
-class CancelForm(FlaskForm):
-    cancel = SubmitField("Cancel")
-
-class ContinuePlayingForm(FlaskForm):
-    continue_playing = SubmitField("Continue Playing")
-
-class BuyForm(FlaskForm):
-    buy = SubmitField("Buy Inventory")
-
-class AddToCartForm(FlaskForm):
-    coffee_units = IntegerField('Coffee(125g/$16.90): ', validators=[InputRequired(), NumberRange(min=0, max=10)])
-    milk_units = IntegerField('Milk(600ml/$4.24): ', validators=[InputRequired(), NumberRange(min=0, max=10)])
-    add_to_cart = SubmitField("Add To Cart")
-
-class ConfirmOrderForm(FlaskForm):
-    confirm_order = SubmitField("Confirm Order")
-
-class MakeCoffeeForm(FlaskForm):
-    make = SubmitField("Make Coffee")
-class GiveCoffeeForm(FlaskForm):
-    give = SubmitField("Give Coffee To Customer")
-
-class CoffeeMachineForm(FlaskForm):
-    add_coffee = SelectField(u'Coffee:',choices=[('18g','18g'), ('24g','24g')])
-    add_water = SelectField(u'Water:',choices=[('50ml','50ml'), ('200ml','200ml'), ('250ml','250ml')])
-    add_milk = SelectField(u'Milk:',choices=[('0ml','0ml'), ('100ml','100ml'), ('150ml','150ml')])
-    make = SubmitField("Make")
-
-class RemakeForm(FlaskForm):
-    remake = SubmitField("Remake")
-
-class DoneForm(FlaskForm):
-    done = SubmitField("Done")
-
-class RejectForm(FlaskForm):
-    reject = SubmitField("Reject")
-
-class NextCustomerForm(FlaskForm):
-    next_customer = SubmitField("Next Customer")
-#! Static Variables
+# Static Variables
 # Shop Menu:
 menu = ['espresso', 'latte', 'cappuccino']
 # Recipes 
@@ -86,10 +25,10 @@ prices = {menu[0]: 3.65,
 @app.route('/', methods=['GET','POST'])
 def start():
     session.pop('name', None)
-    #! Changing Variables
+    # Changing Session Variables
     # Starting Balance: $0.00
     session['balance'] = 0.00
-    # Starting Inventory: coffee(125g), milk(900ml) #! Create a inventory.html page
+    # Starting Inventory: coffee(125g), milk(600ml)
     session['inventory'] = {
         'coffee': 125,
         'milk': 600
@@ -98,7 +37,7 @@ def start():
     session['customer_number'] = 1
     session['named'] = False
     session['accepted'] = False
-    session['the_made_coffee'] = None #! the_made_coffee
+    session['the_made_coffee'] = None
     session['sold_coffee'] = False
     session['bankruptcy'] = False
     session["inventory_lockout"] = False
@@ -172,11 +111,11 @@ def buy_inventory():
         session['coffee_units'] = form.coffee_units.data
         session['milk_units']  = form.milk_units.data
 
-        # Get Total
         # Coffee(250g/$16.90)
         coffee_cost = session['coffee_units'] * 16.90
         # Milk(1800/$4.24)
         milk_cost = session['milk_units'] * 4.24
+        # Get Total
         session['cart_total'] = coffee_cost + milk_cost
         cart_total = session['cart_total']
     elif form2.confirm_order.data and form2.validate_on_submit():
@@ -237,7 +176,7 @@ def front_desk():
     customer_mess = random.choice(customer_messages[0])
     form = RejectForm()
     form2 = MakeCoffeeForm()
-    form3 = NextCustomerForm() #! show this after you give coffee also
+    form3 = NextCustomerForm()
     form4 = GiveCoffeeForm()
     if form.reject.data and form.validate_on_submit():
         rejected = True
@@ -271,7 +210,6 @@ def front_desk():
             rejected = True
             session['the_made_coffee'] = None
 
-            #! Change back to $50 after testing
             if session['balance'] >= 50.00 and session['continue_playing'] == False:
                 session['customer_number'] += 1
                 return redirect(url_for('you_won'))
@@ -312,7 +250,7 @@ def coffee_machine():
         session['inventory']['coffee'] -= added_coffee
         session['inventory']['milk'] -= added_milk
 
-        # Check to see what drink was made(if not in recipes, value = None) <-- None will always get rejected by customer
+        # Check to see what drink was made
         if added_coffee == 18 and added_water == 50 and added_milk == 0:
             session['the_made_coffee'] = 'espresso'
         elif added_coffee == 24 and added_water == 200 and added_milk == 150:
@@ -352,4 +290,4 @@ def you_won():
 
 
 if __name__=="__main__":
-    app.run(debug=True) #! turn off before deployment
+    app.run()

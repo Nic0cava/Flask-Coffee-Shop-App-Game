@@ -20,7 +20,7 @@ shop_name = input("Congratulations on your new coffee shop! What would you like 
 print(f"Your shop name is: {shop_name}")
 
 #! Static Variables 
-# Shop Menu: #! Could possibly have this be up to the player?
+# Shop Menu:
 menu = ['espresso', 'latte', 'cappuccino']
 # Recipes 
 recipes = {menu[0]:"18g coffee, 50ml water, 0ml milk",
@@ -34,13 +34,13 @@ prices = {menu[0]: 3.65,
 # Latte: $6.75
 # Cappuccino: $5.95
 
-#! Changing Variables (needs session['variable name'] in Flask)
+#! Changing Variables
 #! Set at start of the game in Flask app
-# Starting Balance: $50.00
-balance = 50.00
-# Starting Inventory: coffee(250g), milk(1800ml)
-coffee = 250
-milk = 1800
+# Starting Balance: $0.00
+balance = 0.00
+# Starting Inventory: coffee(125g), milk(600ml)
+coffee = 125
+milk = 600
 
 # Update inventory:
 def update_inventory(current_coffee, current_milk, coffee_used, milk_used):
@@ -87,12 +87,10 @@ def buy_inventory(current_balance, current_coffee, current_milk):
 
 shop_open = True
 while shop_open:
-    #! Add a command so user can view the coffee recipes
     command = input('\nWhat would you like to do? (commands: stay open:"open", close shop:"close", view inventory:"i", view balance:"b", buy inventory: "buy"): ').lower()
     if command == 'open':
         pass
     elif command == 'close':
-        #! Make a tracker for how many coffees sold
         gross_profit = balance - 50.00
         print(f'Your gross profit is: ${round(gross_profit, 3)}')
         print('Shop is closed! Goodbye!')
@@ -113,12 +111,9 @@ while shop_open:
     
     random_coffee = random.choice(menu)
     print(f'Customer: "Hello, can I have a {random_coffee} please."')
-    #! Add a command so user can view the coffee recipes
     make = input('Yes or No: ')
     if make == 'yes':
         while True:
-            #! Maybe add an attempts mechanic, if player messes up too many times, customer gets mad
-            #! Add a command so user can view the coffee recipes
             command = input('Make a {random_coffee}("m"), or View recipes ("r"): ')
             if command == 'r':
                 print('------- Recipes ---------')
