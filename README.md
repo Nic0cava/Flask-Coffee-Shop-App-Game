@@ -5,6 +5,8 @@
 
 Welcome to **Coffee Shop Game**, a fun and interactive web-based game built with **Flask**, **WTForms**, and **Flask-WTF**. Take the role of a barista managing a coffee shop, where you'll serve customers, manage inventory, and make the perfect cup of espresso, latte, or cappuccino — all while trying to run a successful coffee business!
 
+> 🎨 **All artwork and illustrations were handmade by the developer.**
+
 ## 🎮 Game Features
 
 - 🧾 **Interactive Customer Orders**  
@@ -21,6 +23,9 @@ Welcome to **Coffee Shop Game**, a fun and interactive web-based game built with
 
 - 📈 **Session-based Progress Tracking**  
   Keeps your game state persistent during your session.
+
+- 📱 **Responsive Design**  
+  Fully responsive and optimized for mobile, tablet, and desktop screens.
 
 ## 🛠 Tech Stack
 
